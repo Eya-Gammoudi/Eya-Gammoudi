@@ -1,0 +1,273 @@
+{% extends 'collector_base.html' %}
+
+{% load static %}
+
+{% block title %}Signup{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <link href="{% static 'css/signup.css' %}" rel="stylesheet">
+
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row" style="height: 10vh">
+        <div class="col-4 d-flex align-items-center justify-content-center" id="left-paper" style="text-align: center;">
+            <h1 ><span id="h1-greener-word">COLLECTOR</span> <span id="h1-greener">SIGNUP</span></h1>
+        </div>
+    </div>    
+
+        <div class="col-8 d-flex align-items-center justify-content-center">
+            <div class="outer-container">
+                <div class="form-container">
+                    <form action="" id="greener-form" class="row g-3 mb-0" method="POST">
+                        {% csrf_token %}
+
+                        <div class="col-12 d-flex justify-content-center align-items-center"
+                            id="s-desc">Signup to get started-Step 1</div>
+                            <div class="col-12 d-flex justify-content-center align-items-center"
+                            id="s-desc">Create an account</div>
+                        <div class="col-md-6">
+                            <label for="{{ form.FirstName.FirstName }}" class="form-label">First Name</label>
+                            {{ form.FirstName }}
+                            <div id="wrong-firstname"></div>
+                        </div><br>
+                        <div class="col-md-6">
+                            <label for="{{ form.LastName.LastName }}" class="form-label">Last Name</label>
+                            {{ form.LastName }}
+                        </div><br>
+                        <div class="col-md-6">
+                            <label for="{{ form.Email.Email }}" class="form-label">Email</label>
+                            {{ form.Email }}
+                        </div><br>
+                        <div class="col-md-6">
+                            <label for="{{ form.password.password }}" class="form-label">Password</label>
+                            {{ form.password }}
+                        </div><br>
+                        <div class="col-md-6">
+                            <label for="{{ form.PhoneNumber.PhoneNumber }}" class="form-label">Phone Number</label>
+                            {{ form.PhoneNumber }}
+                        </div><br>
+                        {{ form.Location }}
+
+                        <div id="alert-container"></div>
+
+                        <div class="col-12 d-flex justify-content-center align-items-center">
+                            <div class="arrows">
+                                <img id="next-pick-location" class="arrow"
+                                    src="{% static 'images/arrow-right-square-fill-Greener.svg' %}">
+                            </div>
+                        </div>
+                    </form>
+                    <div id="pick-location-map" style="display: none; width:40vw;">
+                        <div class="col-12 d-flex justify-content-center align-items-center">
+                            <div class="col-12 d-flex justify-content-center align-items-center" id="s-desc">Signup to get started-Step 2</div>
+                            <div class="col-12 d-flex justify-content-center align-items-center" id="s-desc">Pick location</div>
+                            <div id="map-container">
+                                <div id="map"></div>
+                                <div class="arrows-and-button-container">
+                                    <img id="go-back-fill-form" class="arroww" src="{% static 'images/arrow-left-square-fill-Greener.svg' %}">
+                                    <button id="submit-button" type="submit" form="greener-form">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+const form = document.getElementById('greener-form');
+const nextPickLocationButton = document.getElementById('next-pick-location');
+const pickLocationMap = document.getElementById('pick-location-map');
+const goBackFillFormButton = document.getElementById('go-back-fill-form');
+const alertContainer = document.getElementById("alert-container");
+
+
+
+document.querySelector('form').addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault(); 
+    }
+  });
+
+nextPickLocationButton.addEventListener('click', async function () {
+    // Hide the form and show the pick location map page
+    if( await validateForm())
+    {
+    form.style.display = 'none';
+    pickLocationMap.style.display = 'block';
+    map.invalidateSize();
+    alertContainer.style.display = 'none';
+    }
+});
+
+
+goBackFillFormButton.addEventListener('click', function() {
+    // Show the form and hide the pick location map page
+    pickLocationMap.style.display = 'none';
+    form.style.display = 'flex';
+    alertContainer.style.display = 'block';
+    alertContainer.innerHTML="";
+});
+
+
+/*------------------------------------------------------*/
+
+var map = L.map('map', {
+    doubleClickZoom: false
+  }).setView([35.690274, 9.480218], 7)
+  
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  
+
+var marker;
+
+function addMarker(latlng) {
+    if (marker) {
+        map.removeLayer(marker);
+        marker = null;
+    }
+    marker = L.marker(latlng, { draggable: true }).addTo(map);
+    marker.on('dragend', function(e) {
+        updateLocationField(marker.getLatLng());
+    });
+    marker.on('dblclick', function(e) {
+        map.removeLayer(marker);
+        marker = null;
+        updateLocationField(null);
+    });
+    updateLocationField(latlng);
+}
+
+function updateLocationField(latlng) {
+    var locationField = document.getElementById('location');
+    if (latlng) {
+        locationField.value = 'POINT(' + latlng.lng + ' ' + latlng.lat + ')';
+    } else {
+        locationField.value = '';
+    }
+}
+
+map.on('dblclick', function(e) {
+    addMarker(e.latlng);
+});
+
+
+//form validator
+
+function showAlert(message, type) {
+    const alertContainer = document.getElementById("alert-container");
+    const alertTemplate = `
+    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+`;
+    alertContainer.innerHTML = alertTemplate;
+}
+
+
+async function checkEmail() {
+    const email = document.getElementById("email").value;
+  
+    try {
+      const response = await fetch("/Greener/checkEmail/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: JSON.stringify({ 'email': email })
+      });
+  
+      const data = await response.json();
+  
+      if (data.exists) {
+        console.log("exist");
+        return true;
+      } else {
+        console.log("does not exist");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return false;
+    }
+  }
+
+
+async function validateForm() {
+    const firstName = document.getElementById("first-name");
+    const lastName = document.getElementById("last-name");
+    const password = document.getElementById("password");
+    const phoneNumber = document.getElementById("phone-number");
+    const email = document.getElementById("email");
+
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    const phoneNumberRegex = /^(2|5|7|9)\d{7}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    let isValid = true;
+
+
+    if (!phoneNumberRegex.test(phoneNumber.value)) {
+        showAlert("Invalid phone number.", "danger");
+        phoneNumber.classList.add("is-invalid");
+        isValid = false;
+    } else {
+        phoneNumber.classList.remove("is-invalid");
+    }
+
+    if (!password.value) {
+        showAlert("Password cannot be empty.", "danger");
+        password.classList.add("is-invalid");
+        isValid = false;
+      } else {
+        password.classList.remove("is-invalid");
+      }
+
+    if (!emailRegex.test(email.value) || await checkEmail()) {
+        console.log(checkEmail())
+        showAlert("Invalid email or email already exists.", "danger");
+        email.classList.add("is-invalid");
+        isValid = false;
+    } else {
+        email.classList.remove("is-invalid");
+    }
+
+    if (!lastName.value || !nameRegex.test(lastName.value)) {
+        showAlert("Last name cannot be empty and should not contain special characters.", "danger");
+        lastName.classList.add("is-invalid");
+        isValid = false;
+    } else {
+        lastName.classList.remove("is-invalid");
+    }
+
+    if (!firstName.value || !nameRegex.test(firstName.value)) {
+        showAlert("First name cannot be empty and should not contain special characters.", "danger");
+        firstName.classList.add("is-invalid");
+        isValid = false;
+    } else {
+        firstName.classList.remove("is-invalid");
+    }
+
+
+    return isValid;
+}
+
+
+</script>
+</body>
+{% endblock %}

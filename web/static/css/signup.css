@@ -1,0 +1,160 @@
+/* Add your CSS rules here */
+.body{
+    align-items: center;
+}
+/* Styles for the container-fluid */
+.container-fluid {
+    padding: 0;
+}
+
+/* Styles for the outer container */
+.outer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Styles for the form container */
+.form-container {
+    background-color: #f8f9fa; /* Light background color */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Box shadow effect */
+}
+
+/* Styles for the h1 inside form-container */
+.form-container h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px; /* Add some space below the heading */
+}
+
+/* Styles for the form */
+#greener-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+/* Styles for the h1 with id h1-greener-word */
+#h1-greener-word {
+    text-align: center;
+    color: #28a745;
+    font-size: 2.5rem; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    margin-bottom: 20px;
+}
+
+#h1-greener {
+    text-align: center;
+    color: #000000;
+    font-size: 2.5rem; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    margin-bottom: 20px;
+}
+
+/* Styles for the form labels */
+.form-label {
+    font-weight: bold;
+    color: #333; /* Dark text color */
+}
+
+/* Styles for the input fields */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Styles for the submit button */
+#submit-button {
+    padding: 10px 20px;
+    background-color: #28a745; /* Green color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Styles for the alert container */
+#alert-container {
+    margin-bottom: 15px;
+}
+
+/* Styles for the map */
+#map {
+    margin-top: 15px;
+}
+
+/* Styles for the arrows */
+.arrows {
+    display: flex;
+    align-items: center;
+}
+
+.arrow {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+
+/* Styles for the map container */
+#map-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+}
+
+/* Styles for the map */
+#map {
+    width: 80%; /* Adjust the width as needed */
+    height: 300px; /* Adjust the height as needed */
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Box shadow effect */
+}
+
+/* Styles for the arrows and button container */
+.arrows-and-button-container {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+/* Styles for the arrows */
+.arroww {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Styles for the submit button */
+#submit-button {
+    padding: 10px 20px;
+    background-color: #28a745; /* Green color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+/* Styles for the s-desc */
+#s-desc {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555; /* Adjust text color */
+    margin-top: 10px; /* Adjust top margin */
+    margin-bottom: 20px; /* Adjust bottom margin */
+}

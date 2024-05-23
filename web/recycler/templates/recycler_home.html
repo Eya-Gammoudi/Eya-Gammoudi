@@ -1,0 +1,22 @@
+{% extends 'recycler_base.html' %}
+{% load static %}
+
+{% block title %}Home{%endblock %}
+
+{% block content %}
+
+<script src="https://kit.fontawesome.com/5135d630a7.js" crossorigin="anonymous"></script>
+
+<div class="fluid-container">
+    <div class="row">
+  
+      <div class="col-6 col-lg-2 col-sm-4 col-md-4 d-flex flex-column align-items-center text-center menu" id="left-page">
+  
+        <div>
+          <a href="{% url 'recyclor_home' %}"><i class="bi bi-house"></i>Dashboard</a>
+        </div>
+    </div>
+</div>
+  
+{% endblock %}
+  
